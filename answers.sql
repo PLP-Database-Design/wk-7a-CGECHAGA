@@ -1,53 +1,44 @@
 
---  CREATE TABLE ProductDetail(
--- OrderID INT,
--- CustomerName(255),
--- Products varchar(255)
--- );
--- INSERT INTO ProductDetail(OrderID, CustomerName,Products)VALUES
--- (101,'John Doe', 'Laptop ,Mouse'),
--- (102,'Jane Smith', 'Tablet, Keyboard,Mouse'),
--- (103,'Emily Clark', 'Phone');
+CREATE TABLE ProductDetail(
+OrderID INT,
+CustomerName(100),
+Products varchar(100)
+ );
+ INSERT INTO ProductDetail(OrderID, CustomerName,Products)VALUES
+(101,'John Doe', 'Laptop'),
+(101,'John Doe', 'Mouse'),
+(102,'Jane Smith', 'Tablet'),
+(102,'Jane Smith', 'Keyboard'),
+(102,'Jane Smith', 'Mouse'),
+(103,'Emily Clark', 'Phone');
  
- WITH recursive split_products as(
-select
-OrderID,
- CustomerName,
-TRIM(substring_index(Products, ',' ,1)) as Product,
-substring(products,length(substring_index(products, ',', 1))+2) as rest
-FROM ProductDetail
- union all
- select
-	OrderID,
-    CustomerName,
-    trim(substring_index(rest, ',',1)),
-    substring(rest,length(substring_index(rest, ',', 1)) +2)
-    FROM split_products 
-    where rest is not null and rest !=''
-    )
-    select
-    orderID,
-    CustomerName,
-    Product
-    from split_products;
-
+ 
 
 create table Orders(
 OrderID INT primary KEY,
-CustomerName varchar(255)
+CustomerName varchar(100)
 );
 
 insert into orders(orderID, CustomerName)
-select distinct orderID, CustomerName
-from orderDetails;
+values
+(101,'John Doe')
+(102,'Jane Smith')
+(103,'Emily Clark');
 
-create table orderItems(
+create table Product(
 orderID INT,
-Product varchar(255),
+Product varchar(100),
 quantity int,
 primary key (orderID,Product),
 foreign key (orderID) references orders(orderID)
 );
-insert into orderItems(orderID, Product,quantity)
-select orderID,Product,quantity
-from orderDetails;
+insert into Product(orderID, Product,quantity)
+values
+(101,'Laptop', 2)
+(101,'Mouse', 1)
+(102,'Tablet', 3)
+(102,'Keyboard', 1)
+(102,'Mouse', 2)
+(103,'Phone', 2);
+
+
