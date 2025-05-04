@@ -1,4 +1,4 @@
-use salesdb;
+
 CREATE TABLE ProductDetail(
 OrderID INT,
 CustomerName varchar(100),
